@@ -110,13 +110,13 @@ void create_matrix(int **arr, int n, int m)
 int main()
 {
     srand(time(NULL));
-    int n1 = 2000;
-    int m1 = 2000;
+    int n1 = 1000;
+    int m1 = 1000;
     int **A = new int *[n1];
     create_matrix(A, n1, m1);
 
-    int n2 = 2000;
-    int m2 = 2000;
+    int n2 = 1000;
+    int m2 = 1000;
     int **B = new int *[n2];
     create_matrix(B, n2, m2);
 
