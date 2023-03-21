@@ -17,7 +17,8 @@
             "intelliSenseMode": "windows-msvc-x64",
             "configurationProvider": "ms-vscode.makefile-tools",
             "compilerArgs": [
-                "-O3"
+                "-O3 ",
+                "-fopenmp"
             ]
         }
     ],
