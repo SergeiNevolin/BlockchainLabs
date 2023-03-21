@@ -3,18 +3,24 @@
 #include <omp.h>
 using namespace std;
 
+void fill_matrix(int **arr, int n, int m, int value)
+{
+    for (int i = 0; i < n; i++)
+    {
+        arr[i] = new int[m];
+        for (int j = 0; j < m; j++)
+        {
+            arr[i][j] = value;
+        }
+    }
+    return;
+}
+
 int **sequential_multiply(int **a, int **b, int n1, int m1, int m2)
 {
     int **c = new int *[n1];
+    fill_matrix(c, n1, m2, 0);
 
-    for (int i = 0; i < n1; i++)
-    {
-        c[i] = new int[m2];
-        for (int j = 0; j < m2; j++)
-        {
-            c[i][j] = 0;
-        }
-    }
     auto start = chrono::steady_clock::now();
     for (int i = 0; i < n1; i++)
     {
@@ -35,15 +41,8 @@ int **sequential_multiply(int **a, int **b, int n1, int m1, int m2)
 int **sequential_multiply_boost(int **a, int **b, int n1, int m1, int m2)
 {
     int **c = new int *[n1];
+    fill_matrix(c, n1, m2, 0);
 
-    for (int i = 0; i < n1; i++)
-    {
-        c[i] = new int[m2];
-        for (int j = 0; j < m2; j++)
-        {
-            c[i][j] = 0;
-        }
-    }
     auto start = chrono::steady_clock::now();
     for (int i = 0; i < n1; i++)
     {
@@ -64,25 +63,19 @@ int **sequential_multiply_boost(int **a, int **b, int n1, int m1, int m2)
 int **parallel_multiply(int **a, int **b, int n1, int m1, int m2)
 {
     int **c = new int *[n1];
+    fill_matrix(c, n1, m2, 0);
 
-    for (int i = 0; i < n1; i++)
-    {
-        c[i] = new int[m2];
-        for (int j = 0; j < m2; j++)
-        {
-            c[i][j] = 0;
-        }
-    }
     int threadsNum = omp_get_num_procs();
     omp_set_num_threads(threadsNum);
-    int i, j, k;
     auto start = chrono::steady_clock::now();
-#pragma omp parallel for shared(a, b, c) private(i, j, k)
-    for (i = 0; i < n1; i++)
+
+    
+#pragma omp parallel for 
+    for (int i = 0; i < n1; i++)
     {
-        for (k = 0; k < m1; k++)
+        for (int k = 0; k < m1; k++)
         {
-            for (j = 0; j < m2; j++)
+            for (int j = 0; j < m2; j++)
             {
                 c[i][j] += (a[i][k] * b[k][j]);
             }
